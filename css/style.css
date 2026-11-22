@@ -763,6 +763,24 @@ html[dir="rtl"] .marquee {
         padding: 0;
       }
 
+      .map-wrap {
+        margin-top: 20px;
+      }
+
+      .map-embed {
+        display: block;
+        width: 100%;
+        height: 260px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #e9eef7;
+      }
+
+      .map-link {
+        margin: 10px 0 0;
+        font-size: .88rem;
+      }
+
 
       /* Blog / Insights images */
       .post-thumb {

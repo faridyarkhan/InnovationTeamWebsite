@@ -1,8 +1,8 @@
 # Security headers for Cloudflare Pages / Netlify
-# frame-src is restricted strictly to Microsoft Forms for the embedded form on contact.html.
+# frame-src is restricted strictly to Microsoft Forms and Google Maps embeds on contact.html.
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-src https://forms.cloud.microsoft https://forms.office.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-src https://forms.cloud.microsoft https://forms.office.com https://www.google.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
