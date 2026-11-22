@@ -1,82 +1,10 @@
 /* ==========================================================
    Innovantage India Pvt Ltd - main script
    Features: mobile menu, active link, scroll reveal, back-to-top,
-   tabs, contact form validation, EN/AR language toggle (RTL)
+   tabs, counters
    ========================================================== */
 (function () {
   "use strict";
-
-  /* ---------- Translations (Arabic). English text lives in the HTML. ---------- */
-  var AR = {
-    "nav.home": "الرئيسية", "nav.values": "قيمنا", "nav.why": "لماذا تختارنا", "nav.partners": "الشركاء",
-    "nav.services": "الخدمات", "nav.solutions": "الحلول", "nav.customers": "العملاء",
-    "nav.careers": "الوظائف", "nav.contact": "اتصل بنا",
-    "hero.title": "نحوّل المؤسسات بالذكاء الاصطناعي",
-    "hero.sub": "نطلق الأفكار الجريئة ونحوّل التقليدي إلى حلول رائدة، ونقود التغيير في حلول الذكاء الاصطناعي والتقنية.",
-    "cta.discovery": "احجز مكالمة استكشافية",
-    "sol.title": "حيث يلتقي الابتكار بالتنفيذ", "sol.all": "جميع الحلول", "learn": "اعرف المزيد",
-    "sol.dx": "التجربة الرقمية", "sol.ent": "حلول المؤسسات", "sol.api": "واجهات البرمجة والتكامل",
-    "sol.bom": "مراقبة الأعمال والعمليات",
-    "proj.title": "المشاريع المميزة",
-    "tech.title": "التقنيات والقدرات", "tech.cloud": "المنصات السحابية ومنصات المؤسسات",
-    "tech.ai": "تقنيات الذكاء الاصطناعي وتعلم الآلة", "tech.api": "تطوير واجهات البرمجة والمنظومة",
-    "tech.org": "القدرات التنظيمية والمواهب",
-    "svc.title": "نعمل جنباً إلى جنب لتحقيق رؤيتك", "svc.dt": "التحول الرقمي",
-    "svc.data": "البيانات والذكاء الاصطناعي", "svc.app": "تطوير التطبيقات",
-    "clients.title": "موثوقون من قادة الصناعة",
-    "future.title": "نقود مستقبل الأعمال",
-    "blog.title": "أفكار تشكّل الجيل القادم من المؤسسات", "read": "اقرأ المزيد",
-    "cta.title": "احجز مكالمة معنا", "cta.btn": "تواصل معنا",
-    "footer.company": "الشركة", "footer.services": "الخدمات", "footer.solutions": "الحلول",
-    "footer.rights": "جميع الحقوق محفوظة.", "footer.privacy": "سياسة الخصوصية",
-    "values.title": "قيمنا", "why.title": "لماذا تختارنا", "partners.title": "شركاؤنا",
-    "services.title": "خدماتنا", "solutions.title": "حلولنا", "customers.title": "عملاؤنا",
-    "careers.title": "الوظائف", "contact.title": "تواصل معنا", "privacy.title": "سياسة الخصوصية",
-    "apply": "قدّم الآن",
-    "form.name": "الاسم الكامل", "form.email": "البريد الإلكتروني", "form.phone": "رقم الهاتف (اختياري)",
-    "form.message": "رسالتك", "form.send": "إرسال الرسالة",
-    "form.ok": "شكراً لك! تم استلام رسالتك وسنتواصل معك قريباً.",
-    "err.required": "هذا الحقل مطلوب", "err.email": "يرجى إدخال بريد إلكتروني صحيح",
-    "err.short": "الرجاء كتابة 10 أحرف على الأقل"
-  };
-  var EN = {}; // filled automatically from the page on first load
-
-  var root = document.documentElement;
-  var currentLang = "en";
-
-  function applyLang(lang) {
-    currentLang = lang;
-    root.lang = lang;
-    root.dir = lang === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-i18n]").forEach(function (el) {
-      var key = el.getAttribute("data-i18n");
-      if (!(key in EN)) EN[key] = el.textContent;
-      if (lang === "ar" && AR[key]) el.textContent = AR[key];
-      else if (lang === "en" && EN[key] !== undefined) el.textContent = EN[key];
-    });
-    var btn = document.getElementById("langToggle");
-    if (btn) btn.textContent = lang === "ar" ? "EN" : "عربي";
-    try { localStorage.setItem("innovantage-lang", lang); } catch (e) {}
-  }
-
-  function t(key, fallback) {
-    return currentLang === "ar" && AR[key] ? AR[key] : fallback;
-  }
-
-  /* ---------- Language toggle ---------- */
-  var langBtn = document.getElementById("langToggle");
-  if (langBtn) {
-    langBtn.addEventListener("click", function () {
-      applyLang(currentLang === "en" ? "ar" : "en");
-    });
-  }
-  var saved = null;
-  try { saved = localStorage.getItem("innovantage-lang"); } catch (e) {}
-  // capture English text first, then switch if Arabic was saved
-  document.querySelectorAll("[data-i18n]").forEach(function (el) {
-    EN[el.getAttribute("data-i18n")] = el.textContent;
-  });
-  if (saved === "ar") applyLang("ar");
 
   /* ---------- Mobile menu ---------- */
   var hamburger = document.getElementById("hamburger");
@@ -85,7 +13,7 @@
     hamburger.addEventListener("click", function () {
       var open = nav.classList.toggle("open");
       hamburger.classList.toggle("open", open);
-      hamburger.setAttribute("aria-expanded", open);
+      hamburger.setAttribute("aria-expanded", String(open));
     });
     nav.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () {
@@ -160,57 +88,6 @@
       });
     }, { threshold: 0.4 });
     counters.forEach(function (c) { co.observe(c); });
-  }
-
-  /* ---------- Contact form validation ---------- */
-  var form = document.getElementById("contactForm");
-  if (form) {
-    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    function setError(input, msg) {
-      var group = input.closest(".form-group");
-      group.classList.toggle("invalid", !!msg);
-      group.querySelector(".error-msg").textContent = msg || "";
-      return !msg;
-    }
-
-    function validateField(input) {
-      var v = input.value.trim();
-      if (input.name === "name") return setError(input, v ? "" : t("err.required", "This field is required"));
-      if (input.name === "email") {
-        if (!v) return setError(input, t("err.required", "This field is required"));
-        return setError(input, emailRe.test(v) ? "" : t("err.email", "Please enter a valid email address"));
-      }
-      if (input.name === "message") {
-        if (!v) return setError(input, t("err.required", "This field is required"));
-        return setError(input, v.length >= 10 ? "" : t("err.short", "Please write at least 10 characters"));
-      }
-      return true;
-    }
-
-    form.querySelectorAll("input, textarea").forEach(function (input) {
-      input.addEventListener("blur", function () { validateField(input); });
-      input.addEventListener("input", function () {
-        if (input.closest(".form-group").classList.contains("invalid")) validateField(input);
-      });
-    });
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var ok = true;
-      form.querySelectorAll("input[name], textarea[name]").forEach(function (input) {
-        if (!validateField(input)) ok = false;
-      });
-      var msg = document.getElementById("formSuccess");
-      if (ok) {
-        // Static site: no backend. Connect to a form service (Formspree, EmailJS, etc.) here.
-        form.reset();
-        msg.classList.add("show");
-        setTimeout(function () { msg.classList.remove("show"); }, 6000);
-      } else {
-        msg.classList.remove("show");
-      }
-    });
   }
 
   /* ---------- Footer year ---------- */
